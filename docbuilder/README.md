@@ -1,6 +1,18 @@
 ## Documentation Builder Docker Image
 
-This docker image will take as input a XXXXX and will XXXX. 
+This docker image will take as input a repo mounted as a volume and will run the sphinx documentation. This docker is intended to run both locally and as part of a github action.
+
+options:
+  -h, --help            show this help message and exit
+  -c, --confluence      Build and publish to confluence
+  -m, --html            Build and publish to html
+  -d DIRS [DIRS ...], --dirs DIRS [DIRS ...]
+                        Code directories to document
+  -w, --warn_as_error   Raise warnings as errors
+  -s CONFLUENCE_SECRET, --confluence_secret CONFLUENCE_SECRET
+                        Publish to Confluence API token
+  -p, --confluence_publish
+                        Publish to Confluence
 
 ### Building the image
 
@@ -15,17 +27,6 @@ On a merge to main, this image will be built and pushed up to ghcr.io
 
 The repo to be documented needs to be mounted to /repo on the docker. 
 
-options:
-  -h, --help            show this help message and exit
-  -c, --confluence      Build and publish to confluence
-  -m, --html            Build and publish to html
-  -d DIRS [DIRS ...], --dirs DIRS [DIRS ...]
-                        Code directories to document
-  -w, --warn_as_error   Raise warnings as errors
-  -s CONFLUENCE_SECRET, --confluence_secret CONFLUENCE_SECRET
-                        Publish to Confluence API token
-  -p, --confluence_publish
-                        Publish to Confluence
 
 ```
 docker run -v /path/to/repo/:/repo/ ghcr.io/genapsysinc/docbuilder:latest <options>
