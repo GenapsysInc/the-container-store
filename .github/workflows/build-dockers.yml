@@ -38,7 +38,7 @@ jobs:
             echo "::set-output name=packageJson::$content"
       - name: echo version
         run: |
-          echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
+          echo "${{fromJson(steps.read_meta.outputs.packageJson).version}}"
       - name: Build and NOT push
         uses: docker/build-push-action@v2
         with:
