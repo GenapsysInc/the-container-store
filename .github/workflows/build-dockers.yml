@@ -29,16 +29,14 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
-      - name: read_meta
-        run: |
-            content=`cat docbuilder/meta.json`
-            content="${content//'%'/'%25'}"
-            content="${content//$'\n'/'%0A'}"
-            content="${content//$'\r'/'%0D'}"
-            echo "::set-output name=packageJson::$content"
-      - name: echo version
-        run: |
-          echo "${{fromJson(steps.read_meta.outputs.packageJson).version}}"
+      - name: Read meta data
+        id: meta
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'docbuilder/meta.json'
+          prop_path: 'version'
+      - run: echo ${{steps.meta.outputs.prop}}
+
       - name: Build and NOT push
         uses: docker/build-push-action@v2
         with:
