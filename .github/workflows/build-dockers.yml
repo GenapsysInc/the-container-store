@@ -29,13 +29,22 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
+      - name: read_meta
+          run: |
+            content=`cat docbuilder/meta.json`
+            # the following lines are only required for multi line json
+            content="${content//'%'/'%25'}"
+            content="${content//$'\n'/'%0A'}"
+            content="${content//$'\r'/'%0D'}"
+            # end of optional handling for multi line json
+            echo "::set-output name=packageJson::$content"
       - name: Build and NOT push
         uses: docker/build-push-action@v2
         with:
           context: .
           file: docbuilder/Dockerfile
           push: false
-          tags: ghcr.io/genapsysinc/docbuilder:latest
+          tags: ghcr.io/genapsysinc/docbuilder:latest,ghcr.io/genapsysinc/docbuilder:${{fromJson(steps.read_meta.outputs.packageJson).version}}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
         if: github.event_name == 'pull_request'
@@ -45,7 +54,7 @@ jobs:
           context: .
           file: docbuilder/Dockerfile
           push: true
-          tags: ghcr.io/genapsysinc/docbuilder:latest
+          tags: ghcr.io/genapsysinc/docbuilder:latest,ghcr.io/genapsysinc/docbuilder:${{fromJson(steps.read_meta.outputs.packageJson).version}}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
         if: github.event_name == 'push'
