@@ -2,9 +2,10 @@ name: build-dockers
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   build_and_push_image:
