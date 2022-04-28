@@ -58,7 +58,7 @@ def build_html(warn_as_error: bool, build_dir: str) -> None:
     _build_docs("html", build_dir, warn_as_error=warn_as_error)
 
 
-def build_confluence(warn_as_error: bool, build_dir: str, secret: str = "XXXXXXX", publish: bool = False) -> None:
+def build_confluence(warn_as_error: bool, build_dir: str, secret: str, publish: bool = False) -> None:
     """Render the documents for Confluence publication
 
     :param warn_as_error: Treat warnings as errors
@@ -66,7 +66,9 @@ def build_confluence(warn_as_error: bool, build_dir: str, secret: str = "XXXXXXX
     :param secret: Confluence secret needed to publish
     :param publish: If true publish to confluence; if false render docs but do not publish
     """
-    confluence_options = {"confluence_server_pass": secret}
+    confluence_options = {}
+    if secret:
+        confluence_options.update({"confluence_server_pass": secret})
 
     # Note sphinx struggles with booleans passed as options through -D so only write the option when it is True
     if publish:
