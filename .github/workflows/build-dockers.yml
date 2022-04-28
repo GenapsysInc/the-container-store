@@ -39,17 +39,17 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
         if: github.event_name != 'pull_request'
-    - name: Build and push
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        file: docbuilder/Dockerfile
-        push: true
-        tags: ghcr.io/genapsysinc/docbuilder:latest
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new
-      if: github.event_name != 'push'
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: docbuilder/Dockerfile
+          push: true
+          tags: ghcr.io/genapsysinc/docbuilder:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+        if: github.event_name != 'push'
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
