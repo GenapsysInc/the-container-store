@@ -43,7 +43,7 @@ jobs:
           context: .
           file: docbuilder/Dockerfile
           push: false
-          tags: ghcr.io/genapsysinc/docbuilder:latest,ghcr.io/genapsysinc/docbuilder:${{fromJson(steps.read_meta.outputs.packageJson).version}}
+          tags: ghcr.io/genapsysinc/docbuilder:latest,ghcr.io/genapsysinc/docbuilder:${{steps.meta.outputs.prop}}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
         if: github.event_name == 'pull_request'
@@ -53,7 +53,7 @@ jobs:
           context: .
           file: docbuilder/Dockerfile
           push: true
-          tags: ghcr.io/genapsysinc/docbuilder:latest,ghcr.io/genapsysinc/docbuilder:${{fromJson(steps.read_meta.outputs.packageJson).version}}
+          tags: ghcr.io/genapsysinc/docbuilder:latest,ghcr.io/genapsysinc/docbuilder:${{steps.meta.outputs.prop}}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
         if: github.event_name == 'push'
