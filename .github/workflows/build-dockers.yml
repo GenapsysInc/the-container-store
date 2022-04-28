@@ -3,7 +3,6 @@ name: build-dockers
 on:
   push:
     branches: [main]
-
   pull_request:
     branches: [ main ]
 
