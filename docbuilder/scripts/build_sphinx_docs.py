@@ -115,8 +115,10 @@ def parse_args():
 
 
 def main(args):
-    for directory in args.dirs:
-        build_api_docs(directory)
+
+    if args.dirs:
+        for directory in args.dirs:
+            build_api_docs(directory)
 
     if args.html:
         build_html(args.warn_as_error, BUILDER_DIR)
