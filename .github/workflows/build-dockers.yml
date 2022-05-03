@@ -10,6 +10,8 @@ jobs:
     name: Build and Push Image
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Read docbuilder meta data
         id: meta
         uses: notiz-dev/github-action-json-property@release
