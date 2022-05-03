@@ -23,7 +23,7 @@ jobs:
         with:
           context: .
           dockerfile: docbuilder/Dockerfile
-          push: ${{(github.event_name == 'pull_request' && false) || true}}
+          push: ${{(github.event_name != 'pull_request'}}
           registry: ghcr.io
           tags: ghcr.io/genapsysinc/docbuilder:latest,ghcr.io/genapsysinc/docbuilder:${{steps.meta.outputs.prop}}
           username: ${{ github.repository_owner }}
