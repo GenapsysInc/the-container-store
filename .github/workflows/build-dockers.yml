@@ -26,5 +26,5 @@ jobs:
           push: ${{(github.event_name == 'pull_request' && false) || true}}
           registry: ghcr.io
           tags: ghcr.io/genapsysinc/docbuilder:latest,ghcr.io/genapsysinc/docbuilder:${{steps.meta.outputs.prop}}
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
