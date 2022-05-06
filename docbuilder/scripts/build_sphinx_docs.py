@@ -28,20 +28,21 @@ def build_api_docs(code_dir: str, out_dir: str = DOCUMENTATION_BASE) -> None:
 
 def _get_sphinx_builder(builder: str, build_dir: str, conf_dir: str = None, warn_as_error: bool = False,
                         sphinx_options: dict = None) -> list:
-    warn_opt = ""
+    sphinx_build_cmd = ["sphinx-build", "-b", builder]
+
     if warn_as_error:
-        warn_opt = "-W"
+        sphinx_build_cmd.append("-W")
 
-    conf_opt = ""
     if conf_dir:
-        conf_opt = f"-c {conf_dir}"
+        sphinx_build_cmd.extend(["-c", conf_dir])
 
-    options = ""
     if sphinx_options:
         for k, v in sphinx_options.items():
-            options += f" -D {k}={v} "
+            sphinx_build_cmd.extend(["-D", f"{k}={v}"])
 
-    return ["sphinx-build", f"-M {builder}", conf_opt, warn_opt, options, DOCUMENTATION_BASE, build_dir]
+    sphinx_build_cmd.extend([DOCUMENTATION_BASE, build_dir])
+
+    return sphinx_build_cmd
 
 
 def _build_docs(builder: str, build_dir: str, conf_dir: str = None, warn_as_error: bool = False,
@@ -61,7 +62,7 @@ def build_html(warn_as_error: bool, build_dir: str, version: str = None) -> None
 
     if version:
         html_options.update({"version": version})
-        html_options.update({"release": ".".join(version.split("."))[0:2]})
+        html_options.update({"release": ".".join(version.split(".")[0:2])})
 
     _build_docs("html", build_dir, warn_as_error=warn_as_error, options=html_options)
 
