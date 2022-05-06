@@ -55,6 +55,7 @@ def build_html(warn_as_error: bool, build_dir: str, version: str = None) -> None
 
     :param warn_as_error: Treat warnings as errors
     :param build_dir: Directory to write documentation to
+    :param version: Version to display in rendered html docs, defaults to whatever is in the conf.py
     """
     html_options = {}
 
