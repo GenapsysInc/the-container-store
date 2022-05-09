@@ -23,7 +23,7 @@ def build_api_docs(code_dir: str, out_dir: str = DOCUMENTATION_BASE) -> None:
 
     print(f"Building API docs for {code_dir} and writing them to {api_output_path}")
     api_builder_cmd = ["sphinx-apidoc", "-fM", "-o", api_output_path, "-e", code_dir]
-    subprocess.run(api_builder_cmd)
+    subprocess.run(api_builder_cmd, check=True)
 
 
 def _get_sphinx_builder(builder: str, build_dir: str, conf_dir: str = None, warn_as_error: bool = False,
@@ -48,7 +48,7 @@ def _get_sphinx_builder(builder: str, build_dir: str, conf_dir: str = None, warn
 def _build_docs(builder: str, build_dir: str, conf_dir: str = None, warn_as_error: bool = False,
                 options: dict = None) -> None:
     build_cmd = _get_sphinx_builder(builder, build_dir, conf_dir, warn_as_error=warn_as_error, sphinx_options=options)
-    os.system((' '.join(build_cmd)))
+    subprocess.run(build_cmd, check=True)
 
 
 def build_html(warn_as_error: bool, build_dir: str, version: str = None) -> None:
