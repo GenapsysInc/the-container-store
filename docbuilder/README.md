@@ -7,12 +7,14 @@ options:
   -c, --confluence      Build and publish to confluence
   -m, --html            Build and publish to html
   -d DIRS [DIRS ...], --dirs DIRS [DIRS ...]
-                        Code directories to document
+                        Code directories for API documentation
   -w, --warn_as_error   Raise warnings as errors
   -s CONFLUENCE_SECRET, --confluence_secret CONFLUENCE_SECRET
                         Publish to Confluence API token
   -p, --confluence_publish
                         Publish to Confluence
+  -v VERSION, --version VERSION
+                        Version string for doc build
 
 ### Building the image
 
