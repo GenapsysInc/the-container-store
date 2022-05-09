@@ -86,8 +86,9 @@ def build_confluence(warn_as_error: bool, build_dir: str, secret: str, publish: 
     config_dir = "confluence"
     if not os.path.exists(config_dir):
         os.mkdir(config_dir)
+
     write_custom_config([CONFLUENCE_CONF_PATH, DOCUMENTATION_BASE + "/conf.py"], config_dir)
-    _build_docs("confluence", build_dir=build_dir, conf_dir=".", warn_as_error=warn_as_error,
+    _build_docs("confluence", build_dir=build_dir, conf_dir=config_dir, warn_as_error=warn_as_error,
                 options=confluence_options)
 
 
