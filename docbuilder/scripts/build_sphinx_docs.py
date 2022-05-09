@@ -5,6 +5,7 @@ __author__ = "Aaron Berlin"
 import argparse
 import os
 import subprocess
+from typing import List
 
 BUILDER_DIR = "_builder"
 CONFLUENCE_CONF_PATH = "/scripts/confluence.conf"
@@ -27,20 +28,21 @@ def build_api_docs(code_dir: str, out_dir: str = DOCUMENTATION_BASE) -> None:
 
 def _get_sphinx_builder(builder: str, build_dir: str, conf_dir: str = None, warn_as_error: bool = False,
                         sphinx_options: dict = None) -> list:
-    warn_opt = ""
+    sphinx_build_cmd = ["sphinx-build", "-b", builder]
+
     if warn_as_error:
-        warn_opt = "-W"
+        sphinx_build_cmd.append("-W")
 
-    conf_opt = ""
     if conf_dir:
-        conf_opt = f"-c {conf_dir}"
+        sphinx_build_cmd.extend(["-c", conf_dir])
 
-    options = ""
     if sphinx_options:
         for k, v in sphinx_options.items():
-            options += f" -D {k}={v} "
+            sphinx_build_cmd.extend(["-D", f"{k}={v}"])
 
-    return ["sphinx-build", f"-M {builder}", conf_opt, warn_opt, options, DOCUMENTATION_BASE, build_dir]
+    sphinx_build_cmd.extend([DOCUMENTATION_BASE, build_dir])
+
+    return sphinx_build_cmd
 
 
 def _build_docs(builder: str, build_dir: str, conf_dir: str = None, warn_as_error: bool = False,
@@ -49,13 +51,20 @@ def _build_docs(builder: str, build_dir: str, conf_dir: str = None, warn_as_erro
     os.system((' '.join(build_cmd)))
 
 
-def build_html(warn_as_error: bool, build_dir: str) -> None:
+def build_html(warn_as_error: bool, build_dir: str, version: str = None) -> None:
     """Render the documents to html
 
     :param warn_as_error: Treat warnings as errors
     :param build_dir: Directory to write documentation to
+    :param version: Version to display in rendered html docs, defaults to whatever is in the conf.py
     """
-    _build_docs("html", build_dir, warn_as_error=warn_as_error)
+    html_options = {}
+
+    if version:
+        html_options.update({"version": version})
+        html_options.update({"release": ".".join(version.split(".")[0:2])})
+
+    _build_docs("html", build_dir, warn_as_error=warn_as_error, options=html_options)
 
 
 def build_confluence(warn_as_error: bool, build_dir: str, secret: str, publish: bool = False) -> None:
@@ -82,7 +91,7 @@ def build_confluence(warn_as_error: bool, build_dir: str, secret: str, publish: 
                 options=confluence_options)
 
 
-def write_custom_config(input_files: list[str], output_directory: str) -> None:
+def write_custom_config(input_files: List[str], output_directory: str) -> None:
     """Write a custom config for a specific builder.
 
     :param output_directory: Directory to write the custom conf file
@@ -110,6 +119,7 @@ def parse_args():
     parser.add_argument("-s", "--confluence_secret", required=False, help="Publish to Confluence API token")
     parser.add_argument("-p", "--confluence_publish", required=False, default=False, action='store_true',
                         help="Publish to Confluence")
+    parser.add_argument("-v", "--version", required=False, help="Version string for doc build")
 
     return parser.parse_args()
 
@@ -121,7 +131,7 @@ def main(args):
             build_api_docs(directory)
 
     if args.html:
-        build_html(args.warn_as_error, BUILDER_DIR)
+        build_html(args.warn_as_error, BUILDER_DIR, version=args.version)
 
     if args.confluence:
         build_confluence(args.warn_as_error, BUILDER_DIR, args.confluence_secret, args.confluence_publish)
