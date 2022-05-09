@@ -8,6 +8,8 @@ import subprocess
 from typing import List
 
 BUILDER_DIR = "_builder"
+BUILDER_HTML = f"{BUILDER_DIR}/html"
+BUILDER_CONF = f"{BUILDER_DIR}/confluence"
 CONFLUENCE_CONF_PATH = "/scripts/confluence.conf"
 DOCUMENTATION_BASE = "docs"
 
@@ -131,11 +133,14 @@ def main(args):
         for directory in args.dirs:
             build_api_docs(directory)
 
+    if not os.path.exists(BUILDER_DIR):
+        os.mkdir(BUILDER_DIR)
+
     if args.html:
-        build_html(args.warn_as_error, BUILDER_DIR, version=args.version)
+        build_html(args.warn_as_error, BUILDER_HTML, version=args.version)
 
     if args.confluence:
-        build_confluence(args.warn_as_error, BUILDER_DIR, args.confluence_secret, args.confluence_publish)
+        build_confluence(args.warn_as_error, BUILDER_CONF, args.confluence_secret, args.confluence_publish)
 
 
 if __name__ == "__main__":
