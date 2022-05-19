@@ -9,6 +9,8 @@ options:
   -d DIRS [DIRS ...], --dirs DIRS [DIRS ...]
                         Code directories for API documentation
   -w, --warn_as_error   Raise warnings as errors
+  -u USER_BUILD_OPTIONS, --user_build_options USER_BUILD_OPTIONS
+                        User specified build options
   -s CONFLUENCE_SECRET, --confluence_secret CONFLUENCE_SECRET
                         Publish to Confluence API token
   -p, --confluence_publish
