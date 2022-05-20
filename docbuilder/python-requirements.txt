@@ -8,5 +8,4 @@ sphinx
 sphinx-autoapi
 sphinx-jsonschema!=1.19.0
 sphinx-rtd-theme
-sphinx_rtd_theme
 sphinxcontrib-confluencebuilder
