@@ -1,8 +1,11 @@
-pillow
-Sphinx
-sphinx_rtd_theme
-mlx.traceability
-sphinxcontrib-confluencebuilder
-numpy>=1.22.3
+m2r2
 matplotlib>=3.5.1
+mlx.traceability
 myst-parser
+numpy>=1.22.3
+pillow
+sphinx
+sphinx-autoapi
+sphinx-jsonschema!=1.19.0
+sphinx-rtd-theme
+sphinxcontrib-confluencebuilder
