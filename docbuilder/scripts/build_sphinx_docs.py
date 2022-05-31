@@ -24,7 +24,7 @@ def build_api_docs(code_dir: str, out_dir: str = DOCUMENTATION_BASE) -> None:
     api_output_path = out_dir + "/_" + code_dir
 
     print(f"Building API docs for {code_dir} and writing them to {api_output_path}")
-    api_builder_cmd = ["sphinx-apidoc", "-fM", "-o", api_output_path, "-e", code_dir]
+    api_builder_cmd = ["sphinx-apidoc", "-fM", "-o", api_output_path, "-e", code_dir, "--implicit-namespaces"]
     subprocess.run(api_builder_cmd, check=True)
 
 
