@@ -33,7 +33,7 @@ class SphinxJson(Directive):
             :keep_key:
     """
 
-    optional_arguments = 2
+    required_arguments = 1
     has_content = True
     option_spec = {
         "caption": str,
