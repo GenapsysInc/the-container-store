@@ -13,8 +13,9 @@ RUN python3.10 -m pip install --upgrade -r /tmp/python-requirements.txt
 
 COPY docbuilder/assets /assets
 COPY docbuilder/scripts /scripts/
+COPY docbuilder/_ext /_ext
 
-ENV PYTHONPATH=PYTHONPATH:/scripts/:/repo/
+ENV PYTHONPATH=$PYTHONPATH:/scripts/:/repo/:/_ext/
 
 WORKDIR /repo
 

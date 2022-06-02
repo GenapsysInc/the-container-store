@@ -1,3 +1,4 @@
+jsonpointer
 m2r2
 matplotlib>=3.5.1
 mlx.traceability
