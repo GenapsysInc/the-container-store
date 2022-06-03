@@ -57,7 +57,6 @@ class CompactListJSONEncoder(json.JSONEncoder):
     INDENTATION_CHAR = " "
 
     def __init__(self, *args, **kwargs):
-        # using this class without indentation is pointless
         super().__init__(*args, **kwargs)
         self.indentation_level = 0
 
