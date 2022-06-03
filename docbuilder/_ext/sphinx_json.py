@@ -185,16 +185,24 @@ class SphinxJson(Directive):
             except ValueError:
                 pass
 
-        with open(json_path, 'r', encoding="utf-8") as json_fh:
-            json_content = json.load(json_fh)
+        try:
+            with open(json_path, 'r', encoding="utf-8") as json_fh:
+                json_content = json.load(json_fh)
+        except FileNotFoundError as e:
+            raise self.warning(f"Could not find JSON file {json_path}") from e
+        except json.decoder.JSONDecodeError as e:
+            raise self.warning(f"Could not parse JSON file, got error: {e}") from e
 
-        json_subsection = jsonpointer.resolve_pointer(json_content, pointer)
+        try:
+            json_subsection = jsonpointer.resolve_pointer(json_content, pointer)
 
-        if final_key is not None:
-            if isinstance(json_subsection, dict):
-                json_subsection = {final_key: jsonpointer.resolve_pointer(json_subsection, f"/{final_key}")}
-            else:
-                json_subsection = jsonpointer.resolve_pointer(json_subsection, f"/{final_key}")
+            if final_key is not None:
+                if isinstance(json_subsection, dict):
+                    json_subsection = {final_key: jsonpointer.resolve_pointer(json_subsection, f"/{final_key}")}
+                else:
+                    json_subsection = jsonpointer.resolve_pointer(json_subsection, f"/{final_key}")
+        except jsonpointer.JsonPointerException as e:
+            raise self.warning(f"Invalid pointer for given JSON file, got: {e}")
 
         output_content = json.dumps(json_subsection, indent=self.indent, cls=CompactListJSONEncoder)
 
