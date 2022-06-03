@@ -21,7 +21,7 @@ def flag(opt: str | None) -> bool:
     return False
 
 
-class CompactJSONEncoder(json.JSONEncoder):
+class CompactListJSONEncoder(json.JSONEncoder):
     """A JSON Encoder that tries to put elements of lists with only literals on fewer lines
 
     Modified from https://gist.github.com/jannismain/e96666ca4f059c3e5bc28abb711b5c92
@@ -61,8 +61,8 @@ class CompactJSONEncoder(json.JSONEncoder):
         super().__init__(*args, **kwargs)
         self.indentation_level = 0
 
-    def encode(self, o):
-        """Encode JSON object *o* with respect to single line lists."""
+    def encode(self, o) -> str:
+        """Encode JSON object *o*"""
         # If we decided to not have any indentation, just short circuit here
         if not self.indent:
             return json.dumps(o)
@@ -87,7 +87,7 @@ class CompactJSONEncoder(json.JSONEncoder):
 
         return json.dumps(o)
 
-    def _encode_list(self, l):
+    def _encode_list(self, l: list) -> str:
         """Encodes a list - assumes the list only contains primitives"""
         whole_list_dumped = json.dumps(l)
         elements_in_l = len(l)
@@ -131,7 +131,7 @@ class CompactJSONEncoder(json.JSONEncoder):
 
         return encoded
 
-    def _primitives_only(self, o: list | tuple):
+    def _primitives_only(self, o: list | tuple) -> bool:
         return not any(isinstance(elem, self.CONTAINER_TYPES) for elem in o)
 
     @property
@@ -191,13 +191,13 @@ class SphinxJson(Directive):
 
         json_subsection = jsonpointer.resolve_pointer(json_content, pointer)
 
-        if final_key:
+        if final_key is not None:
             if isinstance(json_subsection, dict):
                 json_subsection = {final_key: jsonpointer.resolve_pointer(json_subsection, f"/{final_key}")}
             else:
                 json_subsection = jsonpointer.resolve_pointer(json_subsection, f"/{final_key}")
 
-        output_content = json.dumps(json_subsection, indent=self.indent, cls=CompactJSONEncoder)
+        output_content = json.dumps(json_subsection, indent=self.indent, cls=CompactListJSONEncoder)
 
         output_node = nodes.literal_block(output_content, output_content)
 
