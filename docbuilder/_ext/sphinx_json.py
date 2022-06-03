@@ -176,6 +176,12 @@ class SphinxJson(Directive):
     def run(self) -> list[nodes.Node]:
         json_path, pointer = self.parse_path_arg(self.arguments[0])
 
+        # Make a copy of the path for warning messages before editing it if it is relative
+        orig_path = json_path
+
+        if not os.path.isabs(json_path):
+            json_path = os.path.join(os.path.dirname(self.state.document.current_source), json_path)
+
         final_key = None
 
         if self.keep_key:
@@ -189,7 +195,7 @@ class SphinxJson(Directive):
             with open(json_path, 'r', encoding="utf-8") as json_fh:
                 json_content = json.load(json_fh)
         except FileNotFoundError as e:
-            raise self.warning(f"Could not find JSON file {json_path}") from e
+            raise self.warning(f"Could not find JSON file {orig_path}") from e
         except json.decoder.JSONDecodeError as e:
             raise self.warning(f"Could not parse JSON file, got error: {e}") from e
 
@@ -202,7 +208,8 @@ class SphinxJson(Directive):
                 else:
                     json_subsection = jsonpointer.resolve_pointer(json_subsection, f"/{final_key}")
         except jsonpointer.JsonPointerException as e:
-            raise self.warning(f"Invalid pointer for given JSON file, got: {e}") from e
+            full_pointer = f"{pointer}/{final_key}" if final_key is not None else pointer
+            raise self.warning(f"Invalid pointer {full_pointer} for JSON file {orig_path}") from e
 
         output_content = json.dumps(json_subsection, indent=self.indent, cls=CompactListJSONEncoder)
 
@@ -241,19 +248,14 @@ class SphinxJson(Directive):
         """Parse directive path argument into JSON file path and pointer, if pointer is given
 
         :param path_arg: The directive's path argument
-        :return: Tuple of JSON file path and pointer, with pointer set to the empty string if not given
+        :return: JSON file path and pointer, with pointer set to the empty string if not given
         """
         split_path_arg = path_arg.rsplit("#", maxsplit=1)
 
         if len(split_path_arg) == 1:
             split_path_arg.append("")
 
-        file_path, pointer = split_path_arg
-
-        if not os.path.isabs(file_path):
-            file_path = os.path.join(os.path.dirname(self.state.document.current_source), file_path)
-
-        return file_path, pointer
+        return split_path_arg
 
 
 def setup(app):
