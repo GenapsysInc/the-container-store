@@ -202,7 +202,7 @@ class SphinxJson(Directive):
                 else:
                     json_subsection = jsonpointer.resolve_pointer(json_subsection, f"/{final_key}")
         except jsonpointer.JsonPointerException as e:
-            raise self.warning(f"Invalid pointer for given JSON file, got: {e}")
+            raise self.warning(f"Invalid pointer for given JSON file, got: {e}") from e
 
         output_content = json.dumps(json_subsection, indent=self.indent, cls=CompactListJSONEncoder)
 
