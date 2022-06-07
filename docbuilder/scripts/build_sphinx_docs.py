@@ -4,6 +4,7 @@ __author__ = "Aaron Berlin"
 
 import argparse
 import os
+import shlex
 import subprocess
 from typing import List
 
@@ -145,7 +146,7 @@ def main(args):
         user_options.extend(["-W", "--keep-going"])
 
     if args.user_build_options:
-        user_options.extend(args.user_build_options.split())
+        user_options.extend(shlex.split(args.user_build_options))
 
     if args.html:
         build_html(BUILDER_HTML, user_options,  version=args.version)
