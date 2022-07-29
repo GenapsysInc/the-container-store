@@ -7,6 +7,7 @@ numpy>=1.22.3
 pillow
 sphinx
 sphinx-autoapi
+sphinx-autodoc-typehints
 sphinx-jsonschema!=1.19.0
 sphinx-rtd-theme
 sphinxcontrib-confluencebuilder
