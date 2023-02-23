@@ -6,7 +6,7 @@ import argparse
 import os
 import shlex
 import subprocess
-from typing import List
+from typing import List, Sequence
 
 BUILDER_DIR = "_builder"
 BUILDER_HTML = f"{BUILDER_DIR}/html"
@@ -15,17 +15,22 @@ CONFLUENCE_CONF_PATH = "/scripts/confluence.conf"
 DOCUMENTATION_BASE = "docs"
 
 
-def build_api_docs(code_dir: str, out_dir: str = DOCUMENTATION_BASE) -> None:
+def build_api_docs(code_dir: str, out_dir: str = DOCUMENTATION_BASE, exclude_patterns: Sequence[str] = None) -> None:
     """Runs sphinx-apidocs on the directories to produce rst docs
 
     :param code_dir: Directory to document
     :param out_dir: Directory to write documentation to
+    :param exclude_patterns: List of patterns to exclude when generating apidocs
     """
 
     api_output_path = out_dir + "/_" + code_dir
 
     print(f"Building API docs for {code_dir} and writing them to {api_output_path}")
-    api_builder_cmd = ["sphinx-apidoc", "-fM", "-o", api_output_path, "-e", code_dir, "--implicit-namespaces"]
+
+    api_builder_cmd = ["sphinx-apidoc", "-fM", "-e", "--implicit-namespaces", "-o", api_output_path, code_dir]
+    if exclude_patterns:
+        api_builder_cmd += exclude_patterns
+
     subprocess.run(api_builder_cmd, check=True)
 
 
@@ -121,6 +126,7 @@ def parse_args():
     parser.add_argument("-m", "--html", required=False, default=False, action='store_true',
                         help="Build and publish to html")
     parser.add_argument("-d", "--dirs", required=False, nargs="+", help="Code directories for API documentation")
+    parser.add_argument("-e", "--exclude", required=False, nargs="+", help="Patterns to exclude from API doc build")
     parser.add_argument("-w", "--warn_as_error", required=False, default=False, action='store_true',
                         help="Raise warnings as errors")
     parser.add_argument("-u", "--user_build_options", required=False, default=None, help="User specified build options")
@@ -136,7 +142,7 @@ def main(args):
 
     if args.dirs:
         for directory in args.dirs:
-            build_api_docs(directory)
+            build_api_docs(directory, exclude_patterns=opts.exclude)
 
     if not os.path.exists(BUILDER_DIR):
         os.mkdir(BUILDER_DIR)
