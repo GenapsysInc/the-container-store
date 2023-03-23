@@ -2,9 +2,10 @@ jsonpointer
 m2r2
 matplotlib>=3.5.1
 mlx.traceability
-myst-parser
 numpy>=1.22.3
 pillow
+myst-parser==0.18.1
+docutils==0.18.1
 sphinx
 sphinx-autoapi
 sphinx-autodoc-typehints
