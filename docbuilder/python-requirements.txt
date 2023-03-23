@@ -10,6 +10,6 @@ sphinx
 sphinx-autoapi
 sphinx-autodoc-typehints
 sphinx-jsonschema!=1.19.0
-sphinx_rtd_theme
+sphinx-rtd-theme
 sphinxcontrib-confluencebuilder
 typing_extensions
