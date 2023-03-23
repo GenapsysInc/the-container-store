@@ -2,15 +2,12 @@ jsonpointer
 m2r2
 matplotlib>=3.5.1
 mlx.traceability
-myst-parser
 numpy>=1.22.3
 pillow
-Sphinx==5.3.0
-ipykernel==6.21.0
-nbsphinx==0.8.12
-sphinx_rtd_theme==1.2.0rc2
 myst-parser==0.18.1
 docutils==0.18.1
+sphinx
+sphinx_rtd_theme
 sphinx-autoapi
 sphinx-autodoc-typehints
 sphinx-jsonschema!=1.19.0
