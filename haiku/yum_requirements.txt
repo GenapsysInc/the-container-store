@@ -1,0 +1,8 @@
+which
+wget
+python39
+python39-devel
+xz-devel
+samtools
+bowtie2
+java-1.8.0-openjdk
