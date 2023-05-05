@@ -1,1 +1,16 @@
 .idea/
+
+*/build
+**/.egg-in
+
+*/build/
+*/dist/
+*/wheels/
+**/*.egg-info
+**/*.egg
+**/__pycache__
+
+_builder/
+confluence/
+docs/_*/
+doctrees/
