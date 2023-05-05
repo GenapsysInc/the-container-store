@@ -1,4 +1,4 @@
 Changelog
 *********
 
-.. mdinclude:: ../CHANGELOG.md
+.. mdinclude:: ../../haiku/CHANGELOG.md

@@ -11,6 +11,7 @@ Python
 
 Docstrings
 ----------
+
 * All functions must have a docstring where the inputs and outputs are clearly described in terms of data type and description
 * PEP8 documentation with reStructuredText for docstrings
 
@@ -53,8 +54,6 @@ Imports are always at the top starting from imports from native python a blank l
    import numpy
 
    import local.library
-
-
 
 
 Plotting

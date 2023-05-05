@@ -11,12 +11,11 @@ This is a sequencing data analysis environment.
 
    quick_start
    changelog
-   scripts
-   make
+   contribution
    build_requirements
    tools
+   requirements
+   trace_matrix
    guides/index
    sagemaker_hints
-   *
-   _src/haiku/modules
-   _tests/modules
+   ../_haiku/src/haiku/modules

@@ -9,5 +9,3 @@ Overview of the guidelines for developing
    :glob:
 
    coding_guidelines
-   pr_review_guidelines
-   module_approvers
